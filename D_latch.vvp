@@ -1,0 +1,87 @@
+#! /c/iverilog/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_01193CC8 .scope module, "d_latch_tb" "d_latch_tb" 2 2;
+ .timescale 0 0;
+v00A13F60_0 .var "clk", 0 0;
+v00A13FB8_0 .var "d", 0 0;
+v00A18528_0 .net "q", 0 0, v00A11730_0; 1 drivers
+v00A18580_0 .net "q_bar", 0 0, L_01193738; 1 drivers
+v00A185D8_0 .var "rst_n", 0 0;
+S_00A11650 .scope module, "dut" "d_latch" 2 6, 3 1, S_01193CC8;
+ .timescale 0 0;
+L_01193738 .functor NOT 1, v00A11730_0, C4<0>, C4<0>, C4<0>;
+v01193D50_0 .net "clk", 0 0, v00A13F60_0; 1 drivers
+v00A116D8_0 .net "d", 0 0, v00A13FB8_0; 1 drivers
+v00A11730_0 .var "q", 0 0;
+v00A13EB0_0 .alias "q_bar", 0 0, v00A18580_0;
+v00A13F08_0 .net "rst_n", 0 0, v00A185D8_0; 1 drivers
+E_00A17F08 .event edge, v01193D50_0;
+    .scope S_00A11650;
+T_0 ;
+    %wait E_00A17F08;
+    %load/v 8, v00A13F08_0, 1;
+    %inv 8, 1;
+    %jmp/0xz  T_0.0, 8;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00A11730_0, 0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/v 8, v01193D50_0, 1;
+    %jmp/0xz  T_0.2, 8;
+    %load/v 8, v00A116D8_0, 1;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00A11730_0, 0, 8;
+T_0.2 ;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0, $push;
+    .scope S_01193CC8;
+T_1 ;
+    %set/v v00A13F60_0, 0, 1;
+    %set/v v00A13FB8_0, 0, 1;
+T_1.0 ;
+    %delay 5, 0;
+    %load/v 8, v00A13F60_0, 1;
+    %inv 8, 1;
+    %set/v v00A13F60_0, 8, 1;
+    %jmp T_1.0;
+    %end;
+    .thread T_1;
+    .scope S_01193CC8;
+T_2 ;
+    %vpi_call 2 17 "$monitor", "At time: %0t, clk = %b, rst_n = %b, d = %b, q = %b, q_bar = %b", $time, v00A13F60_0, v00A185D8_0, v00A13FB8_0, v00A18528_0, v00A18580_0;
+    %vpi_call 2 18 "$dumpfile", "D_latch.vcd";
+    %vpi_call 2 19 "$dumpvars", 1'sb0, S_00A11650;
+    %set/v v00A185D8_0, 0, 1;
+    %delay 10, 0;
+    %set/v v00A185D8_0, 1, 1;
+    %delay 10, 0;
+    %set/v v00A13FB8_0, 0, 1;
+    %delay 10, 0;
+    %set/v v00A13FB8_0, 1, 1;
+    %delay 10, 0;
+    %set/v v00A13FB8_0, 1, 1;
+    %delay 10, 0;
+    %set/v v00A13FB8_0, 0, 1;
+    %delay 10, 0;
+    %set/v v00A13FB8_0, 1, 1;
+    %delay 10, 0;
+    %set/v v00A185D8_0, 0, 1;
+    %end;
+    .thread T_2;
+    .scope S_01193CC8;
+T_3 ;
+    %delay 100, 0;
+    %vpi_call 2 33 "$finish";
+    %end;
+    .thread T_3;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "D_latch_tb.v";
+    "D_latch.v";
